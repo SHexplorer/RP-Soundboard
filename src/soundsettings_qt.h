@@ -47,6 +47,7 @@ private slots:
 	void onColorEnabledPressed();
 	void onChooseColorPressed();
 	void updateSoundView();
+	void onLoopCheckBoxToggled(bool checked);
 
 private:
 	void initGui(const SoundInfo &sound);

@@ -38,6 +38,7 @@ public:
 	int cropStopAfterAt;
 	int cropStopValue;
 	int cropStopUnit;
+	bool loopEnabled;
 };
 
 #endif // rpsbsrc__SoundInfo_H__

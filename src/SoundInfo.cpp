@@ -19,6 +19,7 @@
 #define NAME_CROP_STOP_AFTER_AT "cropStopAfterAt"
 #define NAME_CROP_STOP_VALUE "cropStopValue"
 #define NAME_CROP_STOP_UNIT "cropStopUnit"
+#define NAME_LOOP_ENABLED "loopEnabled"
 
 #define DEFAULT_PATH ""
 #define DEFAULT_CUSTOM_TEXT ""
@@ -30,6 +31,7 @@
 #define DEFAULT_CROP_STOP_AFTER_AT 0
 #define DEFAULT_CROP_STOP_VALUE 0
 #define DEFAULT_CROP_STOP_UNIT 1
+#define DEFAULT_LOOP_ENABLED false
 
 
 QColor stringToColor(const QString &str)
@@ -58,7 +60,8 @@ SoundInfo::SoundInfo() :
 	cropStartUnit(DEFAULT_CROP_START_UNIT),
 	cropStopAfterAt(DEFAULT_CROP_STOP_AFTER_AT),
 	cropStopValue(DEFAULT_CROP_STOP_VALUE),
-	cropStopUnit(DEFAULT_CROP_STOP_UNIT)
+	cropStopUnit(DEFAULT_CROP_STOP_UNIT),
+	loopEnabled(DEFAULT_LOOP_ENABLED)
 {
 
 }
@@ -79,6 +82,7 @@ void SoundInfo::readFromConfig( const QSettings &settings )
 	cropStopAfterAt = settings.value(NAME_CROP_STOP_AFTER_AT, DEFAULT_CROP_STOP_AFTER_AT).toInt();
 	cropStopValue = settings.value(NAME_CROP_STOP_VALUE, DEFAULT_CROP_STOP_VALUE).toInt();
 	cropStopUnit = settings.value(NAME_CROP_STOP_UNIT, DEFAULT_CROP_STOP_UNIT).toInt();
+	loopEnabled = settings.value(NAME_LOOP_ENABLED, DEFAULT_LOOP_ENABLED).toBool();
 }
 
 
@@ -97,6 +101,7 @@ void SoundInfo::saveToConfig( QSettings &settings ) const
 	settings.setValue(NAME_CROP_STOP_AFTER_AT, cropStopAfterAt);
 	settings.setValue(NAME_CROP_STOP_VALUE, cropStopValue);
 	settings.setValue(NAME_CROP_STOP_UNIT, cropStopUnit);
+	settings.setValue(NAME_LOOP_ENABLED, loopEnabled);
 }
 
 

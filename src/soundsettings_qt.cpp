@@ -57,6 +57,7 @@ SoundSettingsQt::SoundSettingsQt(const SoundInfo &soundInfo, size_t buttonId, QW
 	connect(ui->startSoundValueSpin, SIGNAL(valueChanged(int)), this, SLOT(updateSoundView()));
 	connect(ui->stopSoundValueSpin, SIGNAL(valueChanged(int)), this, SLOT(updateSoundView()));
 	connect(ui->groupCrop, SIGNAL(clicked(bool)), this, SLOT(updateSoundView()));
+	connect(ui->loopCheckBox, SIGNAL(toggled(bool)), this, SLOT(onLoopCheckBoxToggled(bool)));
 	initGui(m_soundInfo);
 
 	m_timer = new QTimer(this);
@@ -85,7 +86,8 @@ void SoundSettingsQt::initGui(const SoundInfo &sound)
 	ui->colorButton->setEnabled(sound.customColorEnabled());
 	ui->colorButton->setStyleSheet(QString("background-color: %1").arg(sound.customColor.name()));
 	this->customColor = sound.customColor;
-	
+	ui->loopCheckBox->setChecked(sound.loopEnabled);
+
 	updateHotkeyText();
 
 	m_soundview->setSound(sound);
@@ -107,6 +109,7 @@ void SoundSettingsQt::fillFromGui(SoundInfo &sound)
 	sound.cropStopValue = ui->stopSoundValueSpin->value();
 	sound.cropStopUnit = ui->stopSoundUnitCombo->currentIndex();
 	sound.customColor = this->customColor;
+	sound.loopEnabled = ui->loopCheckBox->isChecked();
 }
 
 //---------------------------------------------------------------
@@ -194,6 +197,13 @@ void SoundSettingsQt::onTimer()
 		ui->previewSoundButton->setIcon(m_iconPlay);
 		m_timer->stop();
 	}
+
+    if (m_soundInfo.loopEnabled && sampler->getState() != Sampler::ePLAYING_PREVIEW) {
+        SoundInfo sound = m_soundInfo;
+        sampler->playPreview(sound);
+        ui->previewSoundButton->setIcon(m_iconStop);
+        m_timer->start(100);
+    }
 }
 
 
@@ -239,6 +249,12 @@ void SoundSettingsQt::updateSoundView()
 	fillFromGui(info);
 	m_soundview->setSound(info);
 	m_soundview->update();
+}
+
+
+void SoundSettingsQt::onLoopCheckBoxToggled(bool checked)
+{
+    m_soundInfo.loopEnabled = checked;
 }
 
 
